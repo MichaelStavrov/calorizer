@@ -1,0 +1,21 @@
+.header {
+  width: 100%;
+  background-color: var(--primary);
+}
+
+.iconWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 70px;
+}
+
+.logoIcon {
+  width: 60px;
+  height: 6 0px;
+}
+
+.navList {
+  display: flex;
+  gap: 30px;
+}
