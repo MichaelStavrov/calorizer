@@ -8,53 +8,46 @@ import {
   TableRow,
   TableSortLabel,
   Paper,
+  TableFooter,
+  TablePagination,
 } from '@mui/material';
 
-import { products } from '../../../../data/products';
+import { ProductItem, products } from '../../../../data/products';
+import { ProductTableProps, SortOrder } from './types';
+import { sortData } from './utils/sortData';
+import { tHead } from './utils/tHead';
+import TablePaginationActions from '../TablePaginationActions';
 
-const ProductTable = () => {
-  const [sortBy, setSortBy] = useState('kcal');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+const ProductTable: FC<ProductTableProps> = ({ filter }) => {
+  const [sortBy, setSortBy] = useState<keyof ProductItem>('kcal');
+  const [sortOrder, setSortOrder] = useState<SortOrder>(SortOrder.asc);
+  const [rows, setRows] = useState(sortData('kcal', SortOrder.asc, products));
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(2);
 
-  const deepCopy = (a: any) => {
-    return JSON.parse(JSON.stringify(a));
-  };
+  // фильтрация по наименованиям
+  useEffect(() => {
+    if (filter) {
+      setRows(sortData('kcal', SortOrder.asc, products));
+      setRows((prev) =>
+        prev.filter(({ items }) => items.find(({ name }) => name === filter))
+      );
+    } else {
+      setRows(sortData('kcal', SortOrder.asc, products));
+    }
+  }, [filter]);
 
-  const sortData = (innerSortBy: any, innerSortOrder: any, rows: any) => {
-    let itemsToSort = deepCopy(rows);
-    let sortedItems = [];
-
-    const compareFn = (i: any, j: any) => {
-      if (i[innerSortBy] < j[innerSortBy]) {
-        return innerSortOrder === 'asc' ? -1 : 1;
-      } else {
-        if (i.kcal > j.kcal) {
-          return innerSortOrder === 'asc' ? 1 : -1;
-        } else {
-          return 0;
-        }
-      }
-    };
-
-    sortedItems = itemsToSort.map((item: any) => ({
-      ...item,
-      items: item.items.sort(compareFn),
-    }));
-
-    return sortedItems;
-  };
-
-  const [rows, setRows] = useState(sortData('kcal', 'asc', products));
-
-  const requestSort = (pSortBy: any) => {
+  // сортировка по столбцам
+  const requestSort = (pSortBy: keyof ProductItem) => {
     let innerSortBy = sortBy;
     let innerSortOrder = sortOrder;
     return () => {
       if (pSortBy === sortBy) {
-        innerSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        innerSortOrder =
+          sortOrder === SortOrder.asc ? SortOrder.desc : SortOrder.asc;
       } else {
         innerSortBy = pSortBy;
-        innerSortOrder = 'asc';
+        innerSortOrder = SortOrder.asc;
       }
       const sortedItems = sortData(innerSortBy, innerSortOrder, products);
       setSortOrder(innerSortOrder);
@@ -63,36 +56,38 @@ const ProductTable = () => {
     };
   };
 
+  // пагинация
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} variant='outlined'>
       <Table sx={{ minWidth: 650, borderCollapse: 'inherit' }}>
         <TableHead>
           <TableRow>
-            <TableCell align='center'>Продукты</TableCell>
-            <TableCell align='center'>
-              <TableSortLabel
-                active={sortBy === 'kcal'}
-                direction={sortOrder}
-                onClick={requestSort('kcal')}
-              >
-                Ккал
-              </TableSortLabel>
-            </TableCell>
-            <TableCell align='center'>
-              <TableSortLabel
-                active={sortBy === 'proteins'}
-                direction={sortOrder}
-                onClick={requestSort('proteins')}
-              >
-                Белки (г)
-              </TableSortLabel>
-            </TableCell>
-            <TableCell align='center'>Жиры (г)</TableCell>
-            <TableCell align='center'>Углеводы (г)</TableCell>
+            {tHead.map(({ id, label, name }) => (
+              <TableCell align='center' key={id}>
+                {name === 'name' ? (
+                  label
+                ) : (
+                  <TableSortLabel
+                    sx={{ textAlign: 'center', marginRight: '-18px' }}
+                    active={sortBy === name}
+                    direction={sortOrder}
+                    onClick={requestSort(name)}
+                  >
+                    {label}
+                  </TableSortLabel>
+                )}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map(({ category, items }: { category: any; items: any }) => (
+          {(rowsPerPage > 0
+            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            : rows
+          ).map(({ category, items }) => (
             <React.Fragment key={category}>
               <TableRow>
                 <TableCell
@@ -101,32 +96,59 @@ const ProductTable = () => {
                   {category}
                 </TableCell>
               </TableRow>
-              {items.map(
-                ({
-                  name,
-                  kcal,
-                  proteins,
-                  fats,
-                  carbohydrates,
-                }: {
-                  name: any;
-                  kcal: any;
-                  proteins: any;
-                  fats: any;
-                  carbohydrates: any;
-                }) => (
-                  <TableRow key={name}>
-                    <TableCell>{name}</TableCell>
-                    <TableCell align='center'>{kcal}</TableCell>
-                    <TableCell align='center'>{proteins}</TableCell>
-                    <TableCell align='center'>{fats}</TableCell>
-                    <TableCell align='center'>{carbohydrates}</TableCell>
-                  </TableRow>
-                )
-              )}
+              {items.map((item) => (
+                <TableRow
+                  key={item.name}
+                  sx={
+                    filter === item.name
+                      ? {
+                          backgroundColor: 'var(--success-light)',
+                          color: 'white',
+                        }
+                      : {}
+                  }
+                >
+                  {Object.values(item).map((value, i) => (
+                    <TableCell
+                      align={i === 0 ? 'left' : 'center'}
+                      key={`${value}${Math.random()}`}
+                      sx={{ color: 'inherit' }}
+                    >
+                      {value}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
             </React.Fragment>
           ))}
         </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TablePagination
+              rowsPerPageOptions={[2, 4, { label: 'Все', value: -1 }]}
+              colSpan={3}
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              SelectProps={{
+                inputProps: {
+                  'aria-label': 'На странице',
+                },
+                native: true,
+              }}
+              labelDisplayedRows={({ from, to, count }) => {
+                return 'Категории ' + from + '-' + to + ' из ' + count;
+              }}
+              labelRowsPerPage={<span>Кол-во категорий на странице</span>}
+              onPageChange={(_, newPage) => setPage(newPage)}
+              onRowsPerPageChange={(e) => {
+                setRowsPerPage(parseInt(e.target.value, 10));
+                setPage(0);
+              }}
+              ActionsComponent={TablePaginationActions}
+            />
+          </TableRow>
+        </TableFooter>
       </Table>
     </TableContainer>
   );

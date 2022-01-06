@@ -4,7 +4,20 @@ export enum ProductCategories {
   fats = 'fats',
 }
 
-export const products = [
+export interface ProductItem {
+  name: string;
+  kcal: number;
+  proteins: number;
+  fats: number;
+  carbohydrates: number;
+}
+export interface Products {
+  category: string;
+  productCategory: ProductCategories;
+  items: ProductItem[];
+}
+
+export const products: Products[] = [
   {
     category: 'Крупы',
     productCategory: ProductCategories.carbohydrates,
