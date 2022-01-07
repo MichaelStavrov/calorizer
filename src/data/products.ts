@@ -19,7 +19,7 @@ export interface Products {
 
 export const products: Products[] = [
   {
-    category: 'Крупы',
+    category: 'Углеводы',
     productCategory: ProductCategories.carbohydrates,
     items: [
       {
@@ -53,7 +53,7 @@ export const products: Products[] = [
     ],
   },
   {
-    category: 'Мясо',
+    category: 'Белки',
     productCategory: ProductCategories.proteins,
     items: [
       {
@@ -84,10 +84,17 @@ export const products: Products[] = [
         fats: 1,
         carbohydrates: 0,
       },
+      {
+        name: 'Яйцо Окское (белок)',
+        kcal: 52,
+        proteins: 12,
+        fats: 0,
+        carbohydrates: 0,
+      },
     ],
   },
   {
-    category: 'Растительные масла',
+    category: 'Жиры',
     productCategory: ProductCategories.fats,
     items: [
       {
@@ -106,31 +113,31 @@ export const products: Products[] = [
       },
     ],
   },
-  {
-    category: 'Овощи',
-    productCategory: ProductCategories.carbohydrates,
-    items: [
-      {
-        name: 'Огурцы',
-        kcal: 16,
-        proteins: 0,
-        fats: 0,
-        carbohydrates: 3,
-      },
-      {
-        name: 'Помидоры',
-        kcal: 20,
-        proteins: 0,
-        fats: 0,
-        carbohydrates: 4,
-      },
-      {
-        name: 'Капуста',
-        kcal: 27,
-        proteins: 0,
-        fats: 0,
-        carbohydrates: 5,
-      },
-    ],
-  },
+  // {
+  //   category: 'Овощи',
+  //   productCategory: ProductCategories.carbohydrates,
+  //   items: [
+  //     {
+  //       name: 'Огурцы',
+  //       kcal: 16,
+  //       proteins: 0,
+  //       fats: 0,
+  //       carbohydrates: 3,
+  //     },
+  //     {
+  //       name: 'Помидоры',
+  //       kcal: 20,
+  //       proteins: 0,
+  //       fats: 0,
+  //       carbohydrates: 4,
+  //     },
+  //     {
+  //       name: 'Капуста',
+  //       kcal: 27,
+  //       proteins: 0,
+  //       fats: 0,
+  //       carbohydrates: 5,
+  //     },
+  //   ],
+  // },
 ];

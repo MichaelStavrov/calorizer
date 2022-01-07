@@ -17,6 +17,7 @@ import { ProductTableProps, SortOrder } from './types';
 import { sortData } from './utils/sortData';
 import { tHead } from './utils/tHead';
 import TablePaginationActions from '../TablePaginationActions';
+import { getNumOfRowsPerPage } from './utils/getNumOfRowsPerPage';
 
 const ProductTable: FC<ProductTableProps> = ({ filter }) => {
   const [sortBy, setSortBy] = useState<keyof ProductItem>('kcal');
@@ -62,7 +63,13 @@ const ProductTable: FC<ProductTableProps> = ({ filter }) => {
 
   return (
     <TableContainer component={Paper} variant='outlined'>
-      <Table sx={{ minWidth: 650, borderCollapse: 'inherit' }}>
+      <Table
+        sx={{
+          minWidth: 650,
+          borderCollapse: 'inherit',
+          '& .MuiTableCell-root': { padding: '8px 12px' },
+        }}
+      >
         <TableHead>
           <TableRow>
             {tHead.map(({ id, label, name }) => (
@@ -125,7 +132,10 @@ const ProductTable: FC<ProductTableProps> = ({ filter }) => {
         <TableFooter>
           <TableRow>
             <TablePagination
-              rowsPerPageOptions={[2, 4, { label: 'Все', value: -1 }]}
+              rowsPerPageOptions={[
+                ...getNumOfRowsPerPage(rows),
+                { label: 'Все', value: -1 },
+              ]}
               colSpan={3}
               count={rows.length}
               rowsPerPage={rowsPerPage}
