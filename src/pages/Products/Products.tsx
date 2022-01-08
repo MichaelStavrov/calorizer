@@ -1,16 +1,18 @@
 import React, { FC, useMemo, useState } from 'react';
+import { observer } from 'mobx-react';
 
 import classes from './Products.module.scss';
 import ProductTable from './components/ProductTable';
 import Search from '../../components/Searh';
-import { products } from '../../data/products';
+import ProductStore from '../../store/ProductStore';
 
-const Products: FC = () => {
+const Products: FC = observer(() => {
+  const { products } = ProductStore;
   const [searchValue, setSearchValue] = useState<string | null>(null);
 
   const itemsToSearch = useMemo(
     () => products.flatMap(({ items }) => items.map(({ name }) => name)).sort(),
-    []
+    [products]
   );
 
   return (
@@ -20,6 +22,7 @@ const Products: FC = () => {
           items={itemsToSearch}
           value={searchValue}
           setValue={setSearchValue}
+          label='Поиск продуктов'
         />
       </div>
       <div className={classes.productTable}>
@@ -27,6 +30,6 @@ const Products: FC = () => {
       </div>
     </div>
   );
-};
+});
 
 export default Products;

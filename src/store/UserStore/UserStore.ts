@@ -1,10 +1,13 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import { persist } from 'mobx-persist';
-
 class UserStore {
   @persist userWeight = '';
 
   @persist userKcal = 0;
+
+  @persist mealsNumber = 5;
+
+  @persist('list') menuForOneDay: any[] = [];
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -16,6 +19,14 @@ class UserStore {
 
   setUserKcal(value: number) {
     this.userKcal = value;
+  }
+
+  setMealsNumber(value: number) {
+    this.mealsNumber = value;
+  }
+
+  addToMenuForOneDay(value: any) {
+    this.menuForOneDay.push(value);
   }
 }
 

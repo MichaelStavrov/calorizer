@@ -3,12 +3,12 @@ import { Autocomplete, TextField } from '@mui/material';
 
 import { SearchProps } from './types';
 
-const Search: FC<SearchProps> = ({ items, value, setValue }) => {
+const Search: FC<SearchProps> = (props) => {
+  const { items, value, setValue, label, sx } = props;
   const [inputValue, setInputValue] = React.useState('');
 
   return (
     <Autocomplete
-      id='grouped-products'
       value={value}
       onChange={(_, newSearchValue) => setValue(newSearchValue)}
       inputValue={inputValue}
@@ -18,9 +18,9 @@ const Search: FC<SearchProps> = ({ items, value, setValue }) => {
       options={items}
       groupBy={(option) => option[0].toUpperCase()}
       getOptionLabel={(option) => option}
-      sx={{ width: '80%' }}
+      sx={sx || { width: '80%' }}
       renderInput={(params) => (
-        <TextField {...params} size='small' label='Поиск продукта' />
+        <TextField {...params} size='small' label={label || ''} />
       )}
     />
   );
