@@ -19,7 +19,7 @@ const theme = createTheme({
 ReactDOM.render(
   <React.StrictMode>
     <Provider {...RootStore}>
-      <BrowserRouter>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <App />
