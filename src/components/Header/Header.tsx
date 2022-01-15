@@ -6,8 +6,9 @@ import classes from './Header.module.scss';
 import logoIcon from '../../assests/images/logo.png';
 
 const navigation = [
-  { id: 1, label: 'Калоризатор', Component: Link, to: 'calorizer' },
-  { id: 2, label: 'Таблица продуктов', Component: Link, to: '/' },
+  { id: 1, label: 'Калоризатор', Component: Link, to: '/' },
+  { id: 2, label: 'Таблица продуктов', Component: Link, to: '/products' },
+  { id: 3, label: 'Мое меню', Component: Link, to: '/menu' },
 ];
 
 const Header: FC = () => {

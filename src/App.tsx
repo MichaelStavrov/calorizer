@@ -5,6 +5,7 @@ import classes from './App.module.css';
 import Header from './components/Header';
 import Main from './components/Main';
 import Calorizer from './pages/Calorizer';
+import MyMenu from './pages/MyMenu';
 import Products from './pages/Products';
 
 const App: FC = () => {
@@ -13,8 +14,9 @@ const App: FC = () => {
       <Header />
       <Main>
         <Routes>
-          <Route path='/' element={<Products />} />
-          <Route path='/calorizer' element={<Calorizer />} />
+          <Route path='/' element={<Calorizer />} />
+          <Route path='/products' element={<Products />} />
+          <Route path='/menu' element={<MyMenu />} />
         </Routes>
       </Main>
     </>

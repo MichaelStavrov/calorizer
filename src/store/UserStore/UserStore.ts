@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { persist } from 'mobx-persist';
+import { FullMenu, MealToMenuForOneDay, MenuForOneDay } from '../../types';
 class UserStore {
   @persist userWeight = '';
 
@@ -7,7 +8,11 @@ class UserStore {
 
   @persist mealsNumber = 5;
 
-  @persist('list') menuForOneDay: any[] = [];
+  @persist('object') menuForOneDay: MenuForOneDay = {};
+
+  @persist menuForOneDayId = 0;
+
+  @persist('list') fullMenu: FullMenu[] = [];
 
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true });
@@ -25,8 +30,30 @@ class UserStore {
     this.mealsNumber = value;
   }
 
-  addToMenuForOneDay(value: any) {
-    this.menuForOneDay.push(value);
+  addToMenuForOneDay(value: MealToMenuForOneDay, mealNumber: number) {
+    if (Object.values(value).some(Boolean)) {
+      this.menuForOneDay = {
+        ...this.menuForOneDay,
+        [`meal${mealNumber + 1}`]: value,
+      };
+    }
+  }
+
+  resetMenuForOneDay() {
+    this.menuForOneDay = {};
+  }
+
+  incMenuForOneDayId() {
+    this.menuForOneDayId = this.menuForOneDayId + 1;
+  }
+
+  addToFullMenu(totalKcal: number) {
+    this.incMenuForOneDayId();
+    this.fullMenu.push({
+      id: this.menuForOneDayId,
+      meal: this.menuForOneDay,
+      totalKcal: totalKcal || 0,
+    });
   }
 }
 

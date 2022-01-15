@@ -1,16 +1,20 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { Card, Divider } from '@mui/material';
 
 import MenuCreatorHeader from '../MenuCreatorHeader';
 import MenuCreatorBody from '../MenuCreatorBody';
+import MenuCreatorFooter from '../MenuCreatorFooter';
 
 const MenuCreator: FC = () => {
   return (
-    <Card elevation={2}>
-      <MenuCreatorHeader />
-      <Divider variant='middle' />
-      <MenuCreatorBody />
-    </Card>
+    <>
+      <Card variant='outlined'>
+        <MenuCreatorHeader />
+        <Divider variant='middle' />
+        <MenuCreatorBody />
+      </Card>
+      <MenuCreatorFooter />
+    </>
   );
 };
 

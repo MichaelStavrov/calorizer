@@ -45,7 +45,7 @@ const CalCalcCardContent: FC = observer(() => {
         }}
       >
         <Typography>Укажите свой вес</Typography>
-        <FormControl variant='standard' size='small' sx={{ width: '100px' }}>
+        <FormControl variant='standard' size='small' sx={{ width: '70px' }}>
           <Input
             type='number'
             id='standard-adornment-weight'
@@ -57,7 +57,7 @@ const CalCalcCardContent: FC = observer(() => {
             onChange={(e) => {
               setUserWeight(+e.target.value < 0 ? '0' : e.target.value);
             }}
-            endAdornment={<InputAdornment position='end'>кг</InputAdornment>}
+            endAdornment={<InputAdornment position='start'>кг</InputAdornment>}
             inputProps={{
               'aria-label': 'weight',
             }}

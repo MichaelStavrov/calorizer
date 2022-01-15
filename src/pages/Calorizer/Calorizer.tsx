@@ -8,9 +8,9 @@ const Calorizer: FC = () => {
   return (
     <Box
       sx={{
-        padding: '20px 0',
+        padding: '20px 0 40px 0',
         display: 'flex',
-        gap: '32px',
+        gap: '16px',
         flexDirection: 'column',
       }}
     >
