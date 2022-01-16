@@ -3,7 +3,6 @@ import { observer } from 'mobx-react';
 import {
   Box,
   FormControl,
-  Input,
   InputAdornment,
   List,
   ListItem,
@@ -27,7 +26,7 @@ const SingleMeal: FC<SingleMealProps> = observer((props) => {
     return () => {
       resetMenuForOneDay();
     };
-  }, []);
+  }, [resetMenuForOneDay]);
 
   const [searchValues, setSearchValues] = useState<{
     [key: string]: string | null;

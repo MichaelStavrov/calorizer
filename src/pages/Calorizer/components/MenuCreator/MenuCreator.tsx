@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Card, Divider } from '@mui/material';
 
 import MenuCreatorHeader from '../MenuCreatorHeader';

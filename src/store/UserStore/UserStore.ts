@@ -49,11 +49,18 @@ class UserStore {
 
   addToFullMenu(totalKcal: number) {
     this.incMenuForOneDayId();
-    this.fullMenu.push({
-      id: this.menuForOneDayId,
-      meal: this.menuForOneDay,
-      totalKcal: totalKcal || 0,
-    });
+    this.fullMenu = [
+      {
+        id: this.menuForOneDayId,
+        meal: this.menuForOneDay,
+        totalKcal: totalKcal || 0,
+      },
+      ...this.fullMenu,
+    ];
+  }
+
+  removeMenu(id: number) {
+    this.fullMenu = this.fullMenu.filter((menu) => menu.id !== id);
   }
 }
 

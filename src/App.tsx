@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import classes from './App.module.css';
 import Header from './components/Header';
 import Main from './components/Main';
 import Calorizer from './pages/Calorizer';

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { observer } from 'mobx-react';
 import {
   Typography,
@@ -20,7 +20,7 @@ const CalCalcCardContent: FC = observer(() => {
 
   useEffect(() => {
     setUserKcal(+Math.round(+userWeight * 26));
-  }, [userWeight]);
+  }, [userWeight, setUserKcal]);
 
   const pfcStack = [
     { label: 'Жиры', percent: 10, padding: '4px 8px', fontSize: '16px' },
